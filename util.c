@@ -24,7 +24,7 @@ string String(char *s)
   return p;
 }
 
-U_boolList U_BoolList(bool head, U_boolList tail)
+U_boolList U_BoolList(boolean head, U_boolList tail)
 {
   U_boolList list = checked_malloc(sizeof(*list));
   list->head = head;

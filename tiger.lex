@@ -1,7 +1,11 @@
 %{
 #include <string.h>
+#include <stdlib.h>
 #include "util.h"
 #include "errormsg.h"
+#include "symbol.h"
+#include "absyn.h"
+#include "y.tab.h"
 
 int charPos=1;
 

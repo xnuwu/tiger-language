@@ -1,4 +1,8 @@
-#include <stdio.h>
 #include "util.h"
 
-void parse(string fname);
+#ifndef PARSE
+#define PARSE
+
+A_exp parse(string fname);
+
+#endif

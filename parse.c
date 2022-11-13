@@ -1,29 +1,35 @@
 #include <stdio.h>
 #include "util.h"
+#include "symbol.h"
+#include "absyn.h"
 #include "errormsg.h"
+#include "parse.h"
+#include "prabsyn.h"
 
-extern void exit(int);
 extern int yyparse(void);
+extern A_exp absyn_root;
 
 int colPos = 1;
 int rowPos = 1;
 
-void parse(string fname)
+A_exp parse(string fname)
 {
     EM_reset(fname);
-    if (yyparse() == 0) /* parsing worked */
+    if (yyparse() == 0) {
+        /* parsing worked */
         fprintf(stderr, "Parsing successful!\n");
-    else
+        return absyn_root;
+    } else {
         fprintf(stderr, "Parsing failed\n");
+        return NULL;
+    }
 }
 
-int main(int argc, char **argv)
-{
-    if (argc != 2)
-    {
-        fprintf(stderr, "usage: a.out filename\n");
-        exit(1);
-    }
-    parse(argv[1]);
+int main() {
+    FILE* fp = fopen("pr_exp.txt", "wb");
+    parse("program.tig");
+    pr_exp(fp, absyn_root, 0);
+    fflush(fp);
+    fclose(fp);
     return 0;
 }

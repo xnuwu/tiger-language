@@ -1,7 +1,10 @@
 #include <assert.h>
 
+#ifndef UTIL
+#define UTIL
+
 typedef char *string;
-typedef char bool;
+typedef char boolean;
 
 #define TRUE 1
 #define FALSE 0
@@ -12,7 +15,9 @@ string String(char *);
 typedef struct U_boolList_ *U_boolList;
 struct U_boolList_
 {
-    bool head;
+    boolean head;
     U_boolList tail;
 };
-U_boolList U_BoolList(bool head, U_boolList tail);
+U_boolList U_BoolList(boolean head, U_boolList tail);
+
+#endif
