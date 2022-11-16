@@ -7,8 +7,6 @@
 
 int yylex(void);
 
-int yydebug = 1;
-
 A_exp absyn_root;
 
 void yyerror(char* s) {
@@ -40,13 +38,13 @@ void yyerror(char* s) {
 %token <sval> ID STRING
 %token <ival> INT
 
-%token 
+%token
   COMMA COLON SEMICOLON LPAREN RPAREN LBRACK RBRACK 
   LBRACE RBRACE DOT 
   PLUS MINUS TIMES DIVIDE EQ NEQ LT LE GT GE
   AND OR ASSIGN
   ARRAY IF THEN ELSE WHILE FOR TO DO LET IN END OF 
-  BREAK NIL
+  BREAK NIL 
   FUNCTION VAR TYPE CMT
 
 %nonassoc LOW
@@ -149,10 +147,10 @@ dec: typedeclist        { $$ = $1; }
    | vardec             { $$ = $1; }
    | fundeclist         { $$ = $1; }
 
-typedeclist: typedec %prec LOW              { $$ = A_TypeDec(EM_tokPos, A_NameTypeList($1, NULL)); }
-         | typedec typedeclist              { $$ = A_TypeDec(EM_tokPos, A_NameTypeList($1, $2->u.type)); }
+typedeclist: typedec %prec LOW              { $$ = A_TypeDec(EM_tokPos, A_NametyList($1, NULL)); }
+         | typedec typedeclist              { $$ = A_TypeDec(EM_tokPos, A_NametyList($1, $2->u.type)); }
 
-typedec: TYPE ID EQ ty          { $$ = A_NameType(S_Symbol($2), $4); }
+typedec: TYPE ID EQ ty          { $$ = A_Namety(S_Symbol($2), $4); }
 
 ty: ID                          { $$ = A_NameTy(EM_tokPos, S_Symbol($1)); }
   | LBRACE tyfields RBRACE      { $$ = A_RecordTy(EM_tokPos, $2);}

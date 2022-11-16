@@ -292,14 +292,14 @@ A_decList A_DecList(A_dec head, A_decList tail) {
     return p;
 }
 
-A_namety A_NameType(S_symbol name, A_ty ty) {
+A_namety A_Namety(S_symbol name, A_ty ty) {
     A_namety p = checked_malloc(sizeof(*p));
     p->name = name;
     p->ty = ty;    
     return p;
 }
 
-A_nametyList A_NameTypeList(A_namety head, A_nametyList tail) {
+A_nametyList A_NametyList(A_namety head, A_nametyList tail) {
     A_nametyList p = checked_malloc(sizeof(*p));
     p->head = head;
     p->tail = tail;    

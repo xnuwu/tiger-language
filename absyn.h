@@ -224,8 +224,8 @@ A_fundecList A_FundecList(A_fundec head, A_fundecList tail);
 
 A_decList A_DecList(A_dec head, A_decList tail);
 
-A_namety A_NameType(S_symbol name, A_ty ty);
-A_nametyList A_NameTypeList(A_namety head, A_nametyList tail);
+A_namety A_Namety(S_symbol name, A_ty ty);
+A_nametyList A_NametyList(A_namety head, A_nametyList tail);
 
 A_efield A_Efield(S_symbol name, A_exp exp);
 A_efieldList A_EfieldList(A_efield head, A_efieldList tail);
