@@ -20,7 +20,7 @@ y.tab.o: y.tab.c
 	cc -g -c y.tab.c
 
 y.tab.c: tiger.yacc
-	bison -dvty tiger.yacc
+	/usr/local/bin/bison -dvty tiger.yacc
 
 y.tab.h: y.tab.c
 	

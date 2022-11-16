@@ -149,7 +149,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 20 "tiger.yacc"
+#line 18 "tiger.yacc"
 
     int pos;
     int ival;
