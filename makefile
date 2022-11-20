@@ -20,6 +20,7 @@ y.tab.o: y.tab.c
 	cc -g -c y.tab.c
 
 y.tab.c: tiger.yacc
+	/usr/local/bin/bison --version
 	/usr/local/bin/bison -dvty tiger.yacc
 
 y.tab.h: y.tab.c
@@ -31,7 +32,8 @@ lex.yy.o: lex.yy.c y.tab.h errormsg.h util.h
 	cc -g -c lex.yy.c
 
 lex.yy.c: tiger.lex
-	lex tiger.lex
+	/usr/local/bin/flex --version
+	/usr/local/bin/flex tiger.lex
 
 util.o: util.c util.h
 	cc -g -c util.c
