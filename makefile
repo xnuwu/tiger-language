@@ -39,4 +39,4 @@ util.o: util.c util.h
 	cc -g -c util.c
 
 clean: 
-	rm -f y.output a.out util.o parse.o lex.yy.o errormsg.o y.tab.c y.tab.h y.tab.o y.tab.o prabsyn.o absyn.o symbol.o table.o
+	rm -f y.output a.out util.o parse.o lex.yy.o errormsg.o y.tab.c y.tab.h y.tab.o y.tab.o prabsyn.o absyn.o symbol.o table.o lex.yy.c

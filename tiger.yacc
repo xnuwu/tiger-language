@@ -54,9 +54,8 @@ void yyerror(char* s) {
 %nonassoc DO OF
 %nonassoc THEN
 %nonassoc ELSE
-%left COMMA
 %left SEMICOLON
-%left ASSIGN
+%nonassoc ASSIGN
 %left OR
 %left AND
 %nonassoc EQ NEQ LT LE GT GE
