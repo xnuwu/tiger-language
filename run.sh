@@ -1,3 +1,3 @@
 make clean
 make 
-./a.out
+./a.out > debug.log

@@ -5,6 +5,8 @@
 #include "errormsg.h"
 #include "absyn.h"
 
+int yydebug = 1;
+
 int yylex(void);
 
 A_exp absyn_root;
@@ -169,8 +171,8 @@ vardec: VAR ID ASSIGN exp                                       { $$ = A_VarDec(
 fundeclist: fundec %prec LOW    { $$ = A_FunctionDec(EM_tokPos, A_FundecList($1, NULL)); }
           | fundec fundeclist   { $$ = A_FunctionDec(EM_tokPos, A_FundecList($1, $2->u.function)); }
 
-fundec: FUNCTION ID LPAREN tyfields RPAREN EQ exp               { $$ = A_Funcdec(EM_tokPos, S_Symbol($2), $4, NULL, $7); }
-      | FUNCTION ID LPAREN tyfields RPAREN COLON ID EQ exp      { $$ = A_Funcdec(EM_tokPos, S_Symbol($2), $4, S_Symbol($7), $9); }
+fundec: FUNCTION ID LPAREN tyfields RPAREN EQ exp               { printf("\r\nfunction1_id=%s\r\n", $2); $$ = A_Funcdec(EM_tokPos, S_Symbol($2), $4, NULL, $7); }
+      | FUNCTION ID LPAREN tyfields RPAREN COLON ID EQ exp      { printf("\r\nfunction2_id=%s\r\n", $2);$$ = A_Funcdec(EM_tokPos, S_Symbol($2), $4, S_Symbol($7), $9); }
 
 lvalue: ID                              { $$ = A_SimpleVar(EM_tokPos, S_Symbol($1)); }
       | lvalue DOT ID                   { $$ = A_FieldVar(EM_tokPos, $1, S_Symbol($3)); }

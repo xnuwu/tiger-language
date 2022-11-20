@@ -2,473 +2,77 @@
   decList(
    functionDec(
     fundecList(
-     fundec(printboard() = 
-        (
-            for i := 0 to N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
+     fundec(printboard,
       fieldList(),
       seqExp(
        expList(
-        callExp(print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
+        callExp(print,
          expList(
-          stringExp("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ),
+          stringExp("\n"),
           expList())),
         expList(
-         forExp(i := 0 to N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
+         forExp(i,
           intExp(0),
           opExp(
            MINUS,
            varExp(
-            simpleVar(N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )),
+            simpleVar(N)),
            intExp(1)),
           seqExp(
            expList(
-            callExp(print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
+            callExp(print,
              expList(
-              stringExp("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ),
+              stringExp("\n"),
               expList())),
             expList(
-             forExp(j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
+             forExp(j,
               intExp(0),
               opExp(
                MINUS,
                varExp(
-                simpleVar(N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )),
+                simpleVar(N)),
                intExp(1)),
-              callExp(print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
+              callExp(print,
                expList(
                 iffExp(
                  opExp(
                   EQUAL,
                   varExp(
                    subscriptVar(
-                    simpleVar(col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ),
+                    simpleVar(col),
                     varExp(
-                     simpleVar(i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )))),
+                     simpleVar(i)))),
                   varExp(
-                   simpleVar(j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ))),
-                 stringExp(" O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ),
-                 stringExp(" .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )),
+                   simpleVar(j))),
+                 stringExp(" O"),
+                 stringExp(" .")),
                 expList())),
               TRUE),
              expList()))),
           TRUE),
          expList())))),
      fundecList(
-      fundec(try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
+      fundec(try,
        fieldList(
-        field(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
-         int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
+        field(c,
+         int,
          TRUE),
         fieldList()),
        iffExp(
         opExp(
          EQUAL,
          varExp(
-          simpleVar(c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )),
+          simpleVar(c)),
          varExp(
-          simpleVar(N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ))),
-        callExp(printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
+          simpleVar(N))),
+        callExp(printboard,
          expList()),
-        forExp(r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
+        forExp(r,
          intExp(0),
          opExp(
           MINUS,
           varExp(
-           simpleVar(N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )),
+           simpleVar(N)),
           intExp(1)),
          iffExp(
           iffExp(
@@ -477,865 +81,180 @@ end
              EQUAL,
              varExp(
               subscriptVar(
-               simpleVar(row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ),
+               simpleVar(row),
                varExp(
-                simpleVar(r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )))),
+                simpleVar(r)))),
              intExp(0)),
             opExp(
              EQUAL,
              varExp(
               subscriptVar(
-               simpleVar(diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ),
+               simpleVar(diag1),
                opExp(
                 PLUS,
                 varExp(
-                 simpleVar(r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )),
+                 simpleVar(r)),
                 varExp(
-                 simpleVar(c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ))))),
+                 simpleVar(c))))),
              intExp(0)),
             intExp(0)),
            opExp(
             EQUAL,
             varExp(
              subscriptVar(
-              simpleVar(diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ),
+              simpleVar(diag2),
               opExp(
                MINUS,
                opExp(
                 PLUS,
                 varExp(
-                 simpleVar(r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )),
+                 simpleVar(r)),
                 intExp(7)),
                varExp(
-                simpleVar(c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ))))),
+                simpleVar(c))))),
             intExp(0)),
            intExp(0)),
           seqExp(
            expList(
             assignExp(
              subscriptVar(
-              simpleVar(diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ),
+              simpleVar(diag2),
               opExp(
                MINUS,
                opExp(
                 PLUS,
                 varExp(
-                 simpleVar(r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )),
+                 simpleVar(r)),
                 intExp(7)),
                varExp(
-                simpleVar(c] := 0
-                        )
-    
-    in try(0)
-end
-    )))),
+                simpleVar(c)))),
              intExp(0)),
             expList(
              assignExp(
               subscriptVar(
-               simpleVar(diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ),
+               simpleVar(diag1),
                opExp(
                 PLUS,
                 varExp(
-                 simpleVar(r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )),
+                 simpleVar(r)),
                 varExp(
-                 simpleVar(c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )))),
+                 simpleVar(c)))),
               intExp(0)),
              expList(
               assignExp(
                subscriptVar(
-                simpleVar(row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ),
+                simpleVar(row),
                 varExp(
-                 simpleVar(r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ))),
+                 simpleVar(r))),
                intExp(0)),
               expList(
-               callExp(try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
+               callExp(try,
                 expList(
                  opExp(
                   PLUS,
                   varExp(
-                   simpleVar(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )),
+                   simpleVar(c)),
                   intExp(1)),
                  expList())),
                expList(
                 assignExp(
                  subscriptVar(
-                  simpleVar(col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ),
+                  simpleVar(col),
                   varExp(
-                   simpleVar(c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ))),
+                   simpleVar(c))),
                  varExp(
-                  simpleVar(r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ))),
+                  simpleVar(r))),
                 expList(
                  assignExp(
                   subscriptVar(
-                   simpleVar(diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ),
+                   simpleVar(diag2),
                    opExp(
                     MINUS,
                     opExp(
                      PLUS,
                      varExp(
-                      simpleVar(r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )),
+                      simpleVar(r)),
                      intExp(7)),
                     varExp(
-                     simpleVar(c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )))),
+                     simpleVar(c)))),
                   intExp(1)),
                  expList(
                   assignExp(
                    subscriptVar(
-                    simpleVar(diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ),
+                    simpleVar(diag1),
                     opExp(
                      PLUS,
                      varExp(
-                      simpleVar(r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )),
+                      simpleVar(r)),
                      varExp(
-                      simpleVar(c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )))),
+                      simpleVar(c)))),
                    intExp(1)),
                   expList(
                    assignExp(
                     subscriptVar(
-                     simpleVar(row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ),
+                     simpleVar(row),
                      varExp(
-                      simpleVar(r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ))),
+                      simpleVar(r))),
                     intExp(1)),
                    expList())))))))))),
          TRUE))),
       fundecList()))),
    decList(
-    varDec(diag2 := intArray [N+N-1] of 0
-
-    function printboard() = 
-        (
-            for i := 0 to N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
-     arrayExp(intArray [N+N-1] of 0
-
-    function printboard() = 
-        (
-            for i := 0 to N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
+    varDec(diag2,
+     arrayExp(intArray,
       opExp(
        MINUS,
        opExp(
         PLUS,
         varExp(
-         simpleVar(N+N-1] of 0
-
-    function printboard() = 
-        (
-            for i := 0 to N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )),
+         simpleVar(N)),
         varExp(
-         simpleVar(N-1] of 0
-
-    function printboard() = 
-        (
-            for i := 0 to N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ))),
+         simpleVar(N))),
        intExp(1)),
       intExp(0)),
      TRUE),
     decList(
-     varDec(diag1 := intArray [N+N-1] of 0
-    var diag2 := intArray [N+N-1] of 0
-
-    function printboard() = 
-        (
-            for i := 0 to N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
-      arrayExp(intArray [N+N-1] of 0
-    var diag2 := intArray [N+N-1] of 0
-
-    function printboard() = 
-        (
-            for i := 0 to N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
+     varDec(diag1,
+      arrayExp(intArray,
        opExp(
         MINUS,
         opExp(
          PLUS,
          varExp(
-          simpleVar(N+N-1] of 0
-    var diag2 := intArray [N+N-1] of 0
-
-    function printboard() = 
-        (
-            for i := 0 to N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )),
+          simpleVar(N)),
          varExp(
-          simpleVar(N-1] of 0
-    var diag2 := intArray [N+N-1] of 0
-
-    function printboard() = 
-        (
-            for i := 0 to N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ))),
+          simpleVar(N))),
         intExp(1)),
        intExp(0)),
       TRUE),
      decList(
-      varDec(col := intArray [ N ] of 0
-    var diag1 := intArray [N+N-1] of 0
-    var diag2 := intArray [N+N-1] of 0
-
-    function printboard() = 
-        (
-            for i := 0 to N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
-       arrayExp(intArray [ N ] of 0
-    var diag1 := intArray [N+N-1] of 0
-    var diag2 := intArray [N+N-1] of 0
-
-    function printboard() = 
-        (
-            for i := 0 to N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
+      varDec(col,
+       arrayExp(intArray,
         varExp(
-         simpleVar(N ] of 0
-    var diag1 := intArray [N+N-1] of 0
-    var diag2 := intArray [N+N-1] of 0
-
-    function printboard() = 
-        (
-            for i := 0 to N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )),
+         simpleVar(N)),
         intExp(0)),
        TRUE),
       decList(
-       varDec(row := intArray [ N ] of 0
-    var col := intArray [ N ] of 0
-    var diag1 := intArray [N+N-1] of 0
-    var diag2 := intArray [N+N-1] of 0
-
-    function printboard() = 
-        (
-            for i := 0 to N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
-        arrayExp(intArray [ N ] of 0
-    var col := intArray [ N ] of 0
-    var diag1 := intArray [N+N-1] of 0
-    var diag2 := intArray [N+N-1] of 0
-
-    function printboard() = 
-        (
-            for i := 0 to N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
+       varDec(row,
+        arrayExp(intArray,
          varExp(
-          simpleVar(N ] of 0
-    var col := intArray [ N ] of 0
-    var diag1 := intArray [N+N-1] of 0
-    var diag2 := intArray [N+N-1] of 0
-
-    function printboard() = 
-        (
-            for i := 0 to N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )),
+          simpleVar(N)),
          intExp(0)),
         TRUE),
        decList(
         typeDec(
          nametyList(
-          namety(intArray = array of int
-    var row := intArray [ N ] of 0
-    var col := intArray [ N ] of 0
-    var diag1 := intArray [N+N-1] of 0
-    var diag2 := intArray [N+N-1] of 0
-
-    function printboard() = 
-        (
-            for i := 0 to N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
-           arrayTy(int
-    var row := intArray [ N ] of 0
-    var col := intArray [ N ] of 0
-    var diag1 := intArray [N+N-1] of 0
-    var diag2 := intArray [N+N-1] of 0
-
-    function printboard() = 
-        (
-            for i := 0 to N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    )),
+          namety(intArray,
+           arrayTy(int)),
           nametyList())),
         decList(
-         varDec(N := 8
-    type intArray = array of int
-    var row := intArray [ N ] of 0
-    var col := intArray [ N ] of 0
-    var diag1 := intArray [N+N-1] of 0
-    var diag2 := intArray [N+N-1] of 0
-
-    function printboard() = 
-        (
-            for i := 0 to N-1
-            do (for j := 0 to N-1
-                    do print(if col[i]=j then " O" else " .");
-                    print("\n")
-                );
-            print("\n")
-        )
-    
-    
-    function try(c:int) = 
-        if c=N
-        then printboard()
-        else for r := 0 to N-1
-                do if row[r]=0 & diag1[r+c]=0 & diag2[r+7-c]=0
-                    then (row[r] :=1; diag1[r+c] := 1; diag2[r+7-c] :=1;
-                            col[c] :=r;
-                            try(c+1);
-                            row[r] :=0; diag1[r+c] := 0; diag2[r+7-c] := 0
-                        )
-    
-    in try(0)
-end
-    ,
+         varDec(N,
           intExp(8),
           TRUE),
          decList()))))))),
   seqExp(
    expList(
-    callExp(try(0)
-end
-    ,
+    callExp(try,
      expList(
       intExp(0),
       expList())),

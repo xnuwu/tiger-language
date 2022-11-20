@@ -75,8 +75,8 @@ STRING              (\042[^\042\n]*\042)
 "var"           {adjust(); return VAR;}
 "type"          {adjust(); return TYPE;}
 [0-9]+	        {adjust(); yylval.ival=atoi(yytext); return INT;}
-{ID}            {adjust(); yylval.sval=yytext; return ID;}
-{STRING}        {adjust(); yylval.sval=yytext; return STRING;}
+{ID}            {adjust(); yylval.sval=String(yytext); return ID;}
+{STRING}        {adjust(); yylval.sval=String(yytext); return STRING;}
 <INITIAL>"/**"  {adjust(); BEGIN(COMMENT); return CMT;}
 <COMMENT>.      {adjust();}
 <COMMENT>"**/"  {adjust(); BEGIN(INITIAL);}
