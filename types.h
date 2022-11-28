@@ -1,3 +1,8 @@
+#include "symbol.h"
+
+#ifndef TYPES
+#define TYPES
+
 typedef struct Ty_ty_ *Ty_ty;
 typedef struct Ty_tyList_ *Ty_tyList;
 typedef struct Ty_field_ *Ty_field;
@@ -41,3 +46,8 @@ Ty_field Ty_Field(S_symbol name, Ty_ty ty);
 
 struct Ty_fieldList_ { Ty_field head; Ty_fieldList tail; };
 Ty_fieldList Ty_FieldList(Ty_field head, Ty_fieldList tail);
+
+void Ty_Print(Ty_ty t);
+void TyList_Print(Ty_tyList list);
+
+#endif
