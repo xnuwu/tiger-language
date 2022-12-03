@@ -19,7 +19,7 @@ E_enventry E_FunEntry(Ty_tyList formals, Ty_ty result) {
 S_table E_base_tenv(void) {
     S_table table = S_empty();
     S_enter(table, S_Symbol("int"), Ty_Int());
-    S_enter(table, S_Symbol("string"), Ty_String());
+    S_enter(table, S_ymbol("string"), Ty_String());
     return table;
 }
 
