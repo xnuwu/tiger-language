@@ -1,6 +1,3 @@
-State 1 conflicts: 1 shift/reduce
-
-
 Grammar
 
     0 $accept: program $end
@@ -258,7 +255,6 @@ state 1
     LBRACK  shift, and go to state 25
     LBRACE  shift, and go to state 26
 
-    LBRACK    [reduce using rule 70 (lvalue)]
     $default  reduce using rule 70 (lvalue)
 
 

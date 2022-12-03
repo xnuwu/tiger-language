@@ -96,7 +96,7 @@ void TyList_Print(Ty_tyList list) {
         printf("TyList( ");
         Ty_Print(list->head);
         printf(",");
-        Ty_Print(list->tail);
+        TyList_Print(list->tail);
         printf(" )");
     }
 }

@@ -21,7 +21,7 @@ struct E_enventry_ {
 E_enventry E_VarEntry(Ty_ty ty);
 E_enventry E_FunEntry(Ty_tyList formals, Ty_ty result);
 
-/** Ty_ty environment */
+/** type environment */
 S_table E_base_tenv(void);
-/** E_enventry environment */
+/** variable environment */
 S_table E_base_venv(void);
