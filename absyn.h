@@ -30,6 +30,7 @@ typedef enum {
     A_eqOp,
     A_neqOp,
     A_ltOp,
+    A_leOp,
     A_gtOp,
     A_geOp
 } A_oper;

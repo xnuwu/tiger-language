@@ -20,6 +20,7 @@ struct expty transVar(S_table venv, S_table tenv, A_var v)
                 EM_error(v->pos, "undefined variable %s", S_name(v->u.simple));
             }
         }
+        break;
         case A_fieldVar: {
             struct expty e = transVar(venv, tenv, v->u.field.var);
             if(e.ty->kind != Ty_Record) {
@@ -34,9 +35,21 @@ struct expty transVar(S_table venv, S_table tenv, A_var v)
                 EM_error(v->pos, "no such field %s in record type", S_name(v->u.field.sym));
             }
         }
+        break;
         case A_subscriptVar: {
-            struct 
+            struct expty varTy = transVar(venv, tenv, v->u.subscript.var);
+            if (varTy.ty->kind != Ty_array) {
+                EM_error( v->u.subscript.var->pos, "variable not a array");
+            } else {
+                struct expty e = transExp(venv, tenv, v->u.subscript.exp);
+                if (e.ty->kind != Ty_int) {
+                    EM_error(v->pos, "subscript index must be Integer");
+                } else {
+                    return expTy(NULL, actual_ty(varTy.ty->u.array));
+                }
+            }
         }
+        break;
     }
     assert(0);
 }
@@ -44,39 +57,147 @@ struct expty transVar(S_table venv, S_table tenv, A_var v)
 struct expty transExp(S_table venv, S_table tenv, A_exp e) {
     switch (e->kind)
     {
-    case A_opExp:
-    {
-        A_oper oper = e->u.op.oper;
-        struct expty left = transExp(venv, tenv, e->u.op.left);
-        struct expty right = transExp(venv, tenv, e->u.op.right);
-        if (oper == A_plusOp)
-        {
-            if (left.ty->kind != Ty_int)
-            {
-                EM_error(e->u.op.left->pos, "integer required");
-            }
-            if (right.ty->kind != Ty_int)
-            {
-                EM_error(e->u.op.right->pos, "integer required");
-            }
+        case A_varExp: {
+            return transVar(venv, tenv, e->u.var);
+        }
+        break;
+        case A_nilExp: {
+            return expTy(NULL, Ty_Nil());
+        }
+        break;
+        case A_intExp: {
             return expTy(NULL, Ty_Int());
         }
-    }
-    case A_letExp:
-    {
-        struct expty exp;
-        A_decList d;
-        S_beginScope(venv);
-        S_beginScope(tenv);
-        for (d = e->u.let.decs; d; d = d->tail)
-        {
-            transDec(venv, tenv, d);
+        break;
+        case A_stringExp: {
+            return expTy(NULL, Ty_String());
         }
-        exp = transExp(venv, tenv, e);
-        S_endScope(tenv);
-        S_endScope(venv);
-        return exp;
-    }
+        break;
+        case A_commentExp: {
+            // TODO handle comment
+        }
+        break;
+        case A_callExp: {
+            E_enventry f = S_look(venv, e->u.call.func);
+            if (f && f->kind == E_funEntry) {
+                // validate function params type
+                Ty_tyList paramTys = f -> u.fun.formals;
+                A_expList args = e->u.call.args;
+                
+                while (paramTys && args)
+                {
+                    struct expty argTy = transExp(venv, tenv, args->head);
+                    if (!is_equal_ty(paramTys->head, argTy.ty)) {
+                        EM_error(args->head->pos, "function call param mismatch");
+                    } else {
+                        args = args->tail;
+                        paramTys = paramTys->tail;
+                    }
+                }
+
+                if (!args && paramTys) {
+                    EM_error(e->pos, "function miss param");
+                } else if (args && !paramTys) {
+                    EM_error(args->head->pos, "function call with too much args");
+                } else {
+                    return expTy(NULL, actual_ty(f->u.fun.result));
+                }
+            } else {
+                EM_error(e->pos, "undefined function %s", S_name(e->u.call.func));
+            }
+        }
+        break;
+        case A_opExp:
+        {
+            A_oper oper = e->u.op.oper;
+            struct expty left = transExp(venv, tenv, e->u.op.left);
+            struct expty right = transExp(venv, tenv, e->u.op.right);
+            if (oper == A_plusOp || oper == A_minusOp || oper == A_timesOp || oper == A_divideOp)
+            {
+                if (left.ty->kind != Ty_int)
+                {
+                    EM_error(e->u.op.left->pos, "integer required");
+                }
+                if (right.ty->kind != Ty_int)
+                {
+                    EM_error(e->u.op.right->pos, "integer required");
+                }
+                return expTy(NULL, Ty_Int());
+            }
+            if (oper == A_eqOp || oper == A_neqOp) {
+                if (left.ty->kind == Ty_record) {
+                    if (right.ty->kind != Ty_record && right.ty->kind != Ty_nil) {
+                        EM_error(e->u.op.right->pos, "record compare with a no record/nil value");
+                    } else {
+                        return expTy(NULL, Ty_Int());
+                    }
+                }
+                if (left.ty->kind == Ty_nil) {
+                    if (!is_equal_ty(left.ty, right.ty)) {
+                        EM_error(e->u.op.right->pos, "nil compare with a invalid type");
+                    } else {
+                        return expTy(NULL, Ty_Int());
+                    }
+                }
+
+                if (left.ty->kind == Ty_int) {
+                    if (!is_equal_ty(left.ty, right.ty)) {
+                        EM_error(e->u.op.right->pos, "integer compare with a not integer value");
+                    } else {
+                        return expTy(NULL, Ty_Int());
+                    }
+                }
+                if (left.ty->kind == Ty_string) {
+                     if (!is_equal_ty(left.ty, right.ty)) {
+                        EM_error(e->u.op.right->pos, "string compare with a not string value");
+                    } else {
+                        return expTy(NULL, Ty_Int());
+                    }
+                }
+                
+                if (left.ty->kind == Ty_array) {
+                     if (!is_equal_ty(left.ty, right.ty)) {
+                        EM_error(e->u.op.right->pos, "array compare with a invalid type");
+                    } else {
+                        return expTy(NULL, Ty_Int());
+                    }
+                }
+
+                EM_error(e->u.op.left->pos, "unexpect expression in comparsion");
+            }
+
+            if (oper == A_ltOp || oper == A_leOp || oper == A_geOp || oper == A_gtOp) {
+                if (!is_equal_ty(left.ty, right.ty)) {
+                    EM_error(e->u.op.right->pos, "lt/le/ge/gt compare with a invalid type");
+                } else if (left.ty == Ty_int || left.ty == Ty_string){
+                    return expTy(NULL, Ty_Int());
+                } else {
+                        EM_error(e->u.op.right->pos, "lt/le/ge/gt compare only support integer/string");
+                }
+            }
+            assert(0 && "Invalid operator in expression");
+        }
+        break;
+        case A_recordExp: {
+            
+        }
+        break;
+        case A_letExp:
+        {
+            struct expty exp;
+            A_decList d;
+            S_beginScope(venv);
+            S_beginScope(tenv);
+            for (d = e->u.let.decs; d; d = d->tail)
+            {
+                transDec(venv, tenv, d);
+            }
+            exp = transExp(venv, tenv, e);
+            S_endScope(tenv);
+            S_endScope(venv);
+            return exp;
+        }
+        break;
     }
     assert(0);
 }
@@ -203,6 +324,24 @@ Ty_ty actual_ty(Ty_ty ty)
     return ty;
 }
 
+boolean is_equal_ty(Ty_ty tTy, Ty_ty eTy) {
+    Ty_ty actualType = actual_ty(tTy);
+    int tKind = actualType->kind;
+    int eKind = eTy->kind;
+
+    if ((tKind == Ty_record || tKind == Ty_array) && eKind == tKind) {
+        return TRUE;
+    }
+
+    if (tKind == Ty_record && eKind == Ty_nil) {
+        return TRUE;
+    }
+
+    if (tKind != Ty_record && tKind != Ty_array && eKind == tKind) {
+        return TRUE;
+    }
+    return FALSE;
+}
 void SEM_transProg(A_exp exp)
 {
     S_table venv = E_base_venv();

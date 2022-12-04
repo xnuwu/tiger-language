@@ -124,7 +124,7 @@ arith_exp: exp PLUS exp                                 { $$ = A_OpExp(EM_tokPos
 comp_exp: exp EQ exp                                    { $$ = A_OpExp(EM_tokPos, A_eqOp, $1, $3); }
         | exp NEQ exp                                   { $$ = A_OpExp(EM_tokPos, A_neqOp, $1, $3); }
         | exp LT exp                                    { $$ = A_OpExp(EM_tokPos, A_ltOp, $1, $3); }
-        | exp LE exp                                    { $$ = A_OpExp(EM_tokPos, A_eqOp, $1, $3); }
+        | exp LE exp                                    { $$ = A_OpExp(EM_tokPos, A_leOp, $1, $3); }
         | exp GT exp                                    { $$ = A_OpExp(EM_tokPos, A_gtOp, $1, $3); }
         | exp GE exp                                    { $$ = A_OpExp(EM_tokPos, A_geOp, $1, $3); }
 

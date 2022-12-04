@@ -13,7 +13,7 @@ struct E_enventry_ {
         } var;
         struct {
             Ty_tyList formals;
-            Ty_tyList result;
+            Ty_ty result;
         } fun;
     } u;
 };
