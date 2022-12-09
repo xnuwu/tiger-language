@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "util.h"
+#include <stdio.h>
+
 void *checked_malloc(int len)
 {
   void *p = malloc(len);

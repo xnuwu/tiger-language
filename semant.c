@@ -23,7 +23,7 @@ struct expty transVar(S_table venv, S_table tenv, A_var v)
         break;
         case A_fieldVar: {
             struct expty e = transVar(venv, tenv, v->u.field.var);
-            if(e.ty->kind != Ty_Record) {
+            if(e.ty->kind != Ty_record) {
                 EM_error(v->u.field.var->pos, "variable not a record type");
             } else {
                 Ty_fieldList f;
@@ -75,6 +75,7 @@ struct expty transExp(S_table venv, S_table tenv, A_exp e) {
         break;
         case A_commentExp: {
             // TODO handle comment
+             EM_error(e->pos, "not support comment yet.");
         }
         break;
         case A_callExp: {
@@ -169,7 +170,7 @@ struct expty transExp(S_table venv, S_table tenv, A_exp e) {
             if (oper == A_ltOp || oper == A_leOp || oper == A_geOp || oper == A_gtOp) {
                 if (!is_equal_ty(left.ty, right.ty)) {
                     EM_error(e->u.op.right->pos, "lt/le/ge/gt compare with a invalid type");
-                } else if (left.ty == Ty_int || left.ty == Ty_string){
+                } else if (left.ty->kind == Ty_int || left.ty->kind == Ty_string){
                     return expTy(NULL, Ty_Int());
                 } else {
                         EM_error(e->u.op.right->pos, "lt/le/ge/gt compare only support integer/string");
@@ -179,7 +180,103 @@ struct expty transExp(S_table venv, S_table tenv, A_exp e) {
         }
         break;
         case A_recordExp: {
-            
+            Ty_ty typ = S_look(venv, e->u.record.typ);
+            if (!typ) {
+                EM_error(e->pos, "undefined type");
+            } else if (typ->kind != Ty_record) {
+                EM_error(e->pos, "%s is not a record", S_name(e->u.record.typ));
+            } else {
+                Ty_fieldList tyList = typ->u.record;
+                A_efieldList fieldList = e->u.record.fields;
+                while (tyList && fieldList) {
+                    struct expty fieldTy = transExp(venv, tenv, fieldList->head->exp);
+                    if (tyList->head->name != fieldList->head->name) {
+                        EM_error(fieldList->head->exp->pos, "%s is not a valid record field in %s", S_name(fieldList->head->name), S_name(e->u.record.typ));
+                    }
+                    if(!is_equal_ty(tyList->head->ty, fieldTy.ty)) {
+                        EM_error(fieldList->head->exp->pos, "record field %s type not match", S_name(tyList->head->name));
+                    } else {
+                        fieldList = fieldList->tail;
+                        tyList = tyList -> tail;
+                    }
+
+                    if(fieldList && !tyList) {
+                        EM_error(fieldList->head->exp->pos, "field %s not exist in record %s", S_name(fieldList->head->name), S_name(e->u.record.typ));
+                    } else if (!fieldList && tyList) {
+                        EM_error(e->pos, "record %s missing field %s", S_name(e->u.record.typ), S_name(tyList->head->name));
+                    } else {
+                        return expTy(NULL, typ);
+                    }
+                }
+            }         
+        }
+        break;
+        case A_seqExp: {
+            A_expList seq = e->u.seq;
+            struct expty ety;
+            while(seq) {
+                ety = transExp(venv, tenv, seq->head);
+                seq = seq -> tail;
+            }
+            return expTy(NULL, ety.ty);
+        }
+        break;
+        case A_assignExp: {
+            struct expty vty = transVar(venv, tenv, e->u.assign.var);
+            struct expty ety = transExp(venv, tenv, e->u.assign.exp);
+            if(!is_equal_ty(vty.ty, ety.ty)) {
+                EM_error(e->pos, "exp can't assign to type");
+            } else {
+                return expTy(NULL, vty.ty);
+            }
+        }
+        break;
+        case A_ifExp: {
+            struct expty iffexp, thenexp, elseexp;
+            iffexp = transExp(venv, tenv, e->u.iff.test);
+            if (iffexp.ty->kind != Ty_int) {
+                EM_error(e->u.iff.test->pos, "if exp result must is integer value");
+            }
+            thenexp = transExp(venv, tenv, e->u.iff.then);
+            if (e->u.iff.elsee) {
+                // must return same type
+                elseexp = transExp(venv, tenv, e->u.iff.elsee);
+                if (!is_equal_ty(thenexp.ty, elseexp.ty)) {
+                    EM_error(e->u.iff.elsee->pos, "then and else must return same type");
+                } else {
+                    return expTy(NULL, elseexp.ty);
+                }
+            } else {
+                // must no return value
+                if (thenexp.ty->kind != Ty_void) {
+                    EM_error(e->u.iff.then->pos, "signle then should'nt return any type");
+                } else {
+                    return expTy(NULL, Ty_Void());
+                }
+            }
+
+        } break;
+        case A_whileExp: {
+            struct expty whileexp = transExp(venv, tenv, e->u.whilee.test);
+            if(whileexp.ty->kind != Ty_int) {
+                EM_error(e->u.iff.test->pos, "while test exp result must is integer value");
+            } else {
+                struct expty bodyexp = transExp(venv, tenv, e->u.whilee.body);
+                if (bodyexp.ty->kind != Ty_void) {
+                     EM_error(e->u.iff.then->pos, "while body should'nt return any type");
+                }
+                return expTy(NULL, Ty_Void());
+            }
+        } break;
+        case A_forExp: {
+            // TODO for exp
+            struct expty loexp, hiexp, bodyexp;
+            loexp = transExp(venv, tenv, e->u.forr.lo);
+            return expTy(NULL, Ty_Void());
+        }
+        break;
+        case A_breakExp: {
+            return expTy(NULL, Ty_Void());
         }
         break;
         case A_letExp:
@@ -190,12 +287,29 @@ struct expty transExp(S_table venv, S_table tenv, A_exp e) {
             S_beginScope(tenv);
             for (d = e->u.let.decs; d; d = d->tail)
             {
-                transDec(venv, tenv, d);
+                transDec(venv, tenv, d -> head);
             }
-            exp = transExp(venv, tenv, e);
+            exp = transExp(venv, tenv, e->u.let.body);
             S_endScope(tenv);
             S_endScope(venv);
             return exp;
+        }
+        break;
+        case A_arrayExp: {
+            Ty_ty typ = S_look(venv, e->u.array.typ);
+            if (!typ) {
+                EM_error(e->pos, "undefined array type");
+            } else {
+                struct expty initexp = transExp(venv, tenv, e->u.array.init);
+                struct expty sizeexp = transExp(venv, tenv, e->u.array.size);
+                if (sizeexp.ty->kind != Ty_int) {
+                    EM_error(e->u.array.init->pos, "array size must be integer");
+                }
+                if (!is_equal_ty(typ->u.array, initexp.ty)) {
+                    EM_error(e->u.array.init->pos, "init type not match array type");
+                }
+                return expTy(NULL, typ);
+            }
         }
         break;
     }
@@ -259,7 +373,7 @@ Ty_ty transTy(S_table tenv, A_ty t)
     }
     case A_recordTy:
     {
-        Ty_fieldList fields = makeFieldTys(t->u.record);
+        Ty_fieldList fields = makeFieldTys(tenv, t->u.record);
         return Ty_Record(fields);
     }
     case A_arrayTy:
@@ -292,6 +406,10 @@ Ty_tyList makeFormalTyList(S_table tenv, A_fieldList params)
         }
     }
     return tailList;
+}
+
+Ty_tyList makeEFieldTyList(S_table tenv, A_efieldList efiledList) {
+
 }
 
 Ty_fieldList makeFieldTys(S_table tenv, A_fieldList fieldList) {
@@ -342,6 +460,7 @@ boolean is_equal_ty(Ty_ty tTy, Ty_ty eTy) {
     }
     return FALSE;
 }
+
 void SEM_transProg(A_exp exp)
 {
     S_table venv = E_base_venv();

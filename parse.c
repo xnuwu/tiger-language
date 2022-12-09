@@ -5,6 +5,7 @@
 #include "errormsg.h"
 #include "parse.h"
 #include "prabsyn.h"
+#include "semant.h"
 
 extern int yyparse(void);
 extern A_exp absyn_root;
@@ -29,6 +30,7 @@ int main() {
     FILE* fp = fopen("pr_exp.txt", "wb");
     parse("program.tig");
     pr_exp(fp, absyn_root, 0);
+    SEM_transProg(absyn_root);
     fflush(fp);
     fclose(fp);
     return 0;

@@ -1,5 +1,14 @@
-a.out: parse.o y.tab.o lex.yy.o errormsg.o util.o prabsyn.o absyn.o symbol.o table.o
-	cc -g parse.o y.tab.o lex.yy.o errormsg.o util.o prabsyn.o absyn.o symbol.o table.o
+a.out: parse.o y.tab.o lex.yy.o errormsg.o util.o prabsyn.o absyn.o symbol.o table.o env.o types.o semant.o
+	cc -g parse.o y.tab.o lex.yy.o errormsg.o util.o prabsyn.o absyn.o symbol.o table.o env.o types.o semant.o
+
+semant.o: semant.c semant.h types.h env.h
+	cc -g -c semant.c
+
+types.o: types.c types.h env.h
+	cc -g -c types.c 
+
+env.o: env.c env.h
+	cc -g -c env.c
 
 parse.o: parse.c errormsg.h util.h
 	cc -g -c parse.c
@@ -39,4 +48,4 @@ util.o: util.c util.h
 	cc -g -c util.c
 
 clean: 
-	rm -f y.output a.out util.o parse.o lex.yy.o errormsg.o y.tab.c y.tab.h y.tab.o y.tab.o prabsyn.o absyn.o symbol.o table.o lex.yy.c
+	rm -f y.output a.out util.o parse.o lex.yy.o errormsg.o y.tab.c y.tab.h y.tab.o env.o types.o semant.o y.tab.o prabsyn.o absyn.o symbol.o table.o lex.yy.c pr_exp.txt

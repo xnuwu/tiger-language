@@ -1,5 +1,8 @@
 #include "types.h"
 
+#ifndef ENV
+#define ENV
+
 typedef struct E_enventry_ *E_enventry;
 
 struct E_enventry_ {
@@ -25,3 +28,5 @@ E_enventry E_FunEntry(Ty_tyList formals, Ty_ty result);
 S_table E_base_tenv(void);
 /** variable environment */
 S_table E_base_venv(void);
+
+#endif 

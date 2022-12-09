@@ -51,7 +51,8 @@ void TAB_enter(TAB_table t, void *key, void* value) {
 void* TAB_look(TAB_table t, void* key) {
     int index;
     binder b;
-    assert(t && key);
+    assert(t);
+    assert(key);
     index = ((unsigned) key) % TABSIZE;
     for(b = t->table[index]; b; b=b->next) {
         if (b->key == key) {
