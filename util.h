@@ -9,6 +9,12 @@ typedef char boolean;
 #define TRUE 1
 #define FALSE 0
 
+typedef enum
+{
+    true = TRUE,
+    false= FALSE
+} bool;
+
 void *checked_malloc(int);
 string String(char *);
 

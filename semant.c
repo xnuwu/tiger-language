@@ -180,7 +180,7 @@ struct expty transExp(S_table venv, S_table tenv, A_exp e) {
         }
         break;
         case A_recordExp: {
-            Ty_ty typ = S_look(venv, e->u.record.typ);
+            Ty_ty typ = S_look(tenv, e->u.record.typ);
             if (!typ) {
                 EM_error(e->pos, "undefined type");
             } else if (typ->kind != Ty_record) {
@@ -296,16 +296,16 @@ struct expty transExp(S_table venv, S_table tenv, A_exp e) {
         }
         break;
         case A_arrayExp: {
-            Ty_ty typ = S_look(venv, e->u.array.typ);
+            Ty_ty typ = S_look(tenv, e->u.array.typ);
             if (!typ) {
-                EM_error(e->pos, "undefined array type");
+                EM_error(e->pos, "undefined array type %s", S_name(e->u.array.typ));
             } else {
                 struct expty initexp = transExp(venv, tenv, e->u.array.init);
                 struct expty sizeexp = transExp(venv, tenv, e->u.array.size);
                 if (sizeexp.ty->kind != Ty_int) {
                     EM_error(e->u.array.init->pos, "array size must be integer");
                 }
-                if (!is_equal_ty(typ->u.array, initexp.ty)) {
+                if (!is_equal_ty(typ->u.name.ty->u.array, initexp.ty)) {
                     EM_error(e->u.array.init->pos, "init type not match array type");
                 }
                 return expTy(NULL, typ);
@@ -329,17 +329,40 @@ void transDec(S_table venv, S_table tenv, A_dec d)
     case A_typeDec:
     {
         A_nametyList next = d->u.type;
+        bool isCycleType = TRUE;
+        // put header part, in case of recursive type define.
         while (next)
         {
-            S_enter(tenv, next->head->name, next->head->ty);
+            S_enter(tenv, next->head->name, Ty_Name(next->head->name, NULL));
             next = next->tail;
         }
+        // inject body part
+        next = d->u.type;
+        while (next)
+        {
+            Ty_ty ty = transTy(tenv, next->head->ty);
+            if(isCycleType) {
+                if(ty->kind != Ty_name) {
+                    isCycleType = FALSE;
+                }
+            }
+            Ty_ty nameTy = S_look(tenv, next->head->name);
+            nameTy->u.name.ty = ty;
+            next = next->tail;
+        }
+        if (isCycleType) {
+            EM_error(d->pos, "illegal type cycle: cycle must contain Ty_record Ty_array or builtin-type");
+        }
+
     }
     break;
     case A_functionDec:
     {
+        //TODO support function type dec
+        A_fundecList next = d->u.function; 
         A_fundec f = d->u.function->head;
-        Ty_ty resultTy = S_look(tenv, f->result);
+        // if not return type, default is Ty_void
+        Ty_ty resultTy = f->result ? S_look(tenv, f->result) : Ty_Void();
         Ty_tyList formalTys = makeFormalTyList(tenv, f->params);
         S_enter(venv, f->name, E_FunEntry(formalTys, resultTy));
         S_beginScope(venv);
@@ -356,7 +379,6 @@ void transDec(S_table venv, S_table tenv, A_dec d)
     }
     break;
     }
-    assert(0);
 }
 
 Ty_ty transTy(S_table tenv, A_ty t)
@@ -405,11 +427,10 @@ Ty_tyList makeFormalTyList(S_table tenv, A_fieldList params)
             EM_error(next->head->pos, "function param undefined type %s", param->name);
         }
     }
+    if (tailList == NULL) {
+        tailList = Ty_TyList(Ty_Void(), NULL);
+    }
     return tailList;
-}
-
-Ty_tyList makeEFieldTyList(S_table tenv, A_efieldList efiledList) {
-
 }
 
 Ty_fieldList makeFieldTys(S_table tenv, A_fieldList fieldList) {

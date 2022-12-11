@@ -48,14 +48,8 @@ void yyerror(char* s) {
   FUNCTION VAR TYPE CMT
 
 %nonassoc LOW
-%nonassoc TYPE FUNCTION
-%nonassoc ID
-%nonassoc LBRACK
-%nonassoc DO OF
-%nonassoc THEN
-%nonassoc ELSE
-%left SEMICOLON
-%nonassoc ASSIGN
+%nonassoc THEN DO TYPE FUNCTION ID 
+%nonassoc ASSIGN LBRACK ELSE OF COMMA
 %left OR
 %left AND
 %nonassoc EQ NEQ LT LE GT GE
@@ -102,7 +96,7 @@ exp:            lvalue                                  { $$ = A_VarExp(EM_tokPo
             |   LET decs IN expseq END                  { $$ = A_LetExp(EM_tokPos, $2, A_SeqExp(EM_tokPos, $4)); }
 
 expseq: exp                                             { $$ = A_ExpList($1, NULL); }
-      | expseq SEMICOLON exp                            { $$ = A_ExpList($3, $1); }
+      | exp SEMICOLON expseq                            { $$ = A_ExpList($1, $3); }
 
 if_exp: IF exp THEN exp                                 { $$ = A_IfExp(EM_tokPos, $2, $4, NULL); }
       | IF exp THEN exp ELSE exp                        { $$ = A_IfExp(EM_tokPos, $2, $4, $6); }
@@ -114,7 +108,7 @@ func_call_exp: ID LPAREN RPAREN                         { $$ = A_CallExp(EM_tokP
         | ID LPAREN func_call_param_exp RPAREN          { $$ = A_CallExp(EM_tokPos, S_Symbol($1), $3); }
 
 func_call_param_exp: exp                                { $$ = A_ExpList($1, NULL); }          
-                   | func_call_param_exp COMMA exp      { $$ = A_ExpList($3, $1); }          
+                   | exp COMMA func_call_param_exp      { $$ = A_ExpList($1, $3); }          
 
 arith_exp: exp PLUS exp                                 { $$ = A_OpExp(EM_tokPos, A_plusOp, $1, $3); }
          | exp MINUS exp                                { $$ = A_OpExp(EM_tokPos, A_minusOp, $1, $3); }
@@ -135,12 +129,12 @@ record_create_exp: ID LBRACE RBRACE                                     { $$ = A
                  | ID LBRACE record_create_exp_no_empty RBRACE          { $$ = A_RecordExp(EM_tokPos, S_Symbol($1), $3); }
 
 record_create_exp_no_empty: ID EQ exp                                   { $$ = A_EfieldList(A_Efield(S_Symbol($1), $3), NULL); }
-                          | record_create_exp_no_empty COMMA ID EQ exp  { $$ = A_EfieldList(A_Efield(S_Symbol($3), $5), $1); }
+                          | ID EQ exp COMMA record_create_exp_no_empty  { $$ = A_EfieldList(A_Efield(S_Symbol($1), $3), $5); }
 
 array_create_exp: ID LBRACK exp RBRACK OF exp                           { $$ = A_ArrayExp(EM_tokPos, S_Symbol($1), $3, $6); }
 
 decs: /* empty */                                                       { $$ = NULL; }
-    | decs dec                                                          { $$ = A_DecList($2, $1); }    
+    | dec decs                                                          { $$ = A_DecList($1, $2); }    
 
 dec: typedeclist        { $$ = $1; }
    | vardec             { $$ = $1; }
@@ -159,7 +153,7 @@ tyfields: /* empty */           { $$ = NULL; }
         | tyfields_no_empty     { $$ = $1; }        
 
 tyfields_no_empty : tyfield                                     { $$ = A_FieldList($1, NULL); }
-                  | tyfields_no_empty COMMA tyfield             { $$ = A_FieldList($3, $1); }
+                  | tyfield COMMA tyfields_no_empty             { $$ = A_FieldList($1, $3); }
 
 tyfield: ID COLON ID                                            { $$ = A_Field(EM_tokPos, S_Symbol($1), S_Symbol($3)); }
 
@@ -172,7 +166,7 @@ fundeclist: fundec %prec LOW    { $$ = A_FunctionDec(EM_tokPos, A_FundecList($1,
 fundec: FUNCTION ID LPAREN tyfields RPAREN EQ exp               { $$ = A_Funcdec(EM_tokPos, S_Symbol($2), $4, NULL, $7); }
       | FUNCTION ID LPAREN tyfields RPAREN COLON ID EQ exp      { $$ = A_Funcdec(EM_tokPos, S_Symbol($2), $4, S_Symbol($7), $9); }
 
-lvalue: ID                              { $$ = A_SimpleVar(EM_tokPos, S_Symbol($1)); }
+lvalue: ID %prec LOW                    { $$ = A_SimpleVar(EM_tokPos, S_Symbol($1)); }
       | lvalue DOT ID                   { $$ = A_FieldVar(EM_tokPos, $1, S_Symbol($3)); }
       | ID LBRACK exp RBRACK            { $$ = A_SubscriptVar(EM_tokPos, A_SimpleVar(EM_tokPos, S_Symbol($1)), $3); }
       | lvalue LBRACK exp RBRACK        { $$ = A_SubscriptVar(EM_tokPos, $1, $3); }
