@@ -5,6 +5,7 @@
 #include "env.h"
 #include "errormsg.h"
 #include "util.h"
+#include <stdio.h>
 
 struct expty transVar(S_table venv, S_table tenv, A_var v)
 {
@@ -85,7 +86,7 @@ struct expty transExp(S_table venv, S_table tenv, A_exp e) {
                 Ty_tyList paramTys = f -> u.fun.formals;
                 A_expList args = e->u.call.args;
                 
-                while (paramTys && args)
+                while (paramTys && paramTys->head->kind != Ty_void && args)
                 {
                     struct expty argTy = transExp(venv, tenv, args->head);
                     if (!is_equal_ty(paramTys->head, argTy.ty)) {
@@ -96,9 +97,9 @@ struct expty transExp(S_table venv, S_table tenv, A_exp e) {
                     }
                 }
 
-                if (!args && paramTys) {
-                    EM_error(e->pos, "function miss param");
-                } else if (args && !paramTys) {
+                if (!args && paramTys && paramTys->head->kind != Ty_void) {
+                    EM_error(e->pos, "%s function miss param", S_name(e->u.call.func));
+                } else if (args && (!paramTys || (paramTys && paramTys->head->kind == Ty_void))) {
                     EM_error(args->head->pos, "function call with too much args");
                 } else {
                     return expTy(NULL, actual_ty(f->u.fun.result));
@@ -324,6 +325,7 @@ void transDec(S_table venv, S_table tenv, A_dec d)
     {
         struct expty e = transExp(venv, tenv, d->u.var.init);
         S_enter(venv, d->u.var.var, E_VarEntry(e.ty));
+        printf("tran var dec %s\r\n", S_name(d->u.var.var));
     }
     break;
     case A_typeDec:
@@ -333,6 +335,7 @@ void transDec(S_table venv, S_table tenv, A_dec d)
         // put header part, in case of recursive type define.
         while (next)
         {
+            printf("tran type dec %s\r\n", S_name(next->head->name));
             S_enter(tenv, next->head->name, Ty_Name(next->head->name, NULL));
             next = next->tail;
         }
@@ -353,29 +356,54 @@ void transDec(S_table venv, S_table tenv, A_dec d)
         if (isCycleType) {
             EM_error(d->pos, "illegal type cycle: cycle must contain Ty_record Ty_array or builtin-type");
         }
-
     }
     break;
     case A_functionDec:
     {
-        //TODO support function type dec
-        A_fundecList next = d->u.function; 
-        A_fundec f = d->u.function->head;
-        // if not return type, default is Ty_void
-        Ty_ty resultTy = f->result ? S_look(tenv, f->result) : Ty_Void();
-        Ty_tyList formalTys = makeFormalTyList(tenv, f->params);
-        S_enter(venv, f->name, E_FunEntry(formalTys, resultTy));
-        S_beginScope(venv);
-        {
-            A_fieldList l;
-            Ty_tyList t;
-            for (l = f->params, t = formalTys; l; l = l->tail, t = t->tail)
-            {
-                S_enter(venv, l->head->name, E_VarEntry(t->head));
+        // register function type
+        A_fundecList next = d->u.function;
+        A_fundec f;
+        while(next) {
+            f = next->head;
+            printf("tran function dec %s\r\n", S_name(next->head->name));
+            Ty_ty resultTy = NULL;
+            if (f->result) {
+                resultTy = S_look(tenv, f->result);
+                if (!resultTy) {
+                    EM_error(f->pos, "undefined function return type");
+                }
             }
+            if (!resultTy) {
+                resultTy = Ty_Void();
+            }
+            Ty_tyList formalTys = makeFormalTyList(tenv, f->params);
+            S_enter(venv, f->name, E_FunEntry(formalTys, resultTy));
+            next = next->tail;
         }
-        transExp(venv, tenv, f->body);
-        S_endScope(venv);
+
+        // register function body
+        next = d->u.function;
+        while(next) {
+            f = next->head;
+            E_enventry fnEntry = S_look(venv, f->name);
+            Ty_tyList formalTys = fnEntry->u.fun.formals;
+            Ty_ty resultTy = fnEntry->u.fun.result;
+            S_beginScope(venv);
+            {
+                A_fieldList l;
+                Ty_tyList t;
+                for (l = f->params, t = formalTys; l; l = l->tail, t = t->tail)
+                {
+                    S_enter(venv, l->head->name, E_VarEntry(t->head));
+                }
+            }
+            struct expty exTy = transExp(venv, tenv, f->body);
+            if(!is_equal_ty(fnEntry->u.fun.result, exTy.ty)) {
+                EM_error(f->body->pos, "incorrect return type");
+            }
+            S_endScope(venv);
+            next = next->tail;
+        }
     }
     break;
     }
@@ -426,6 +454,7 @@ Ty_tyList makeFormalTyList(S_table tenv, A_fieldList params)
         {
             EM_error(next->head->pos, "function param undefined type %s", param->name);
         }
+        next = next -> tail;
     }
     if (tailList == NULL) {
         tailList = Ty_TyList(Ty_Void(), NULL);
