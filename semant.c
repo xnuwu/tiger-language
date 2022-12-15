@@ -75,8 +75,7 @@ struct expty transExp(S_table venv, S_table tenv, A_exp e) {
         }
         break;
         case A_commentExp: {
-            // TODO handle comment
-             EM_error(e->pos, "not support comment yet.");
+            EM_error(e->pos, "not support comment yet.");
         }
         break;
         case A_callExp: {
@@ -270,9 +269,25 @@ struct expty transExp(S_table venv, S_table tenv, A_exp e) {
             }
         } break;
         case A_forExp: {
-            // TODO for exp
             struct expty loexp, hiexp, bodyexp;
             loexp = transExp(venv, tenv, e->u.forr.lo);
+            if (loexp.ty->kind != Ty_int) {
+                EM_error(e->u.forr.lo->pos, "for low field should be int");
+                assert(0);
+            }
+
+            hiexp = transExp(venv, tenv, e->u.forr.hi);
+            if (hiexp.ty->kind != Ty_int) {
+                EM_error(e->u.forr.hi->pos, "for high field should be int");
+                assert(0);
+            }
+
+            bodyexp = transExp(venv, tenv, e->u.forr.body);
+            if(bodyexp.ty->kind != Ty_void) {
+                EM_error(e->u.forr.body->pos, "for body should return void");
+                assert(0);
+            }
+
             return expTy(NULL, Ty_Void());
         }
         break;
